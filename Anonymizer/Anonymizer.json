@@ -1,17 +1,17 @@
 [
     {
         "Author": "AndreB",
-        "Name": "Plugin Name",
-        "Punchline": "Punchlin",
-        "Description": "Description",
+        "Name": "Anonymizer",
+        "Punchline": "Anonymizes Player",
+        "Description": "Anonymizes information about the player in an attempt to make you untraceable.",
         "Tags": [
-            "tag1",
-	        "tag2"
+            "hide",
+	    "protect"
         ],
-        "InternalName": "PluginName",
+        "InternalName": "Anonymizer",
         "AssemblyVersion": "0.0.0.1",
         "TestingAssemblyVersion": "0.0.0.1",
-        "RepoUrl": "https://github.com/Ryan-RH/PluginTemplate",
+        "RepoUrl": "https://github.com/Ryan-RH/Anonymizer",
         "ApplicableVersion": "any",
         "DalamudApiLevel": 11,
         "TestingDalamudApiLevel": 11,

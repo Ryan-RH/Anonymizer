@@ -3,16 +3,16 @@ using ECommons.Configuration;
 using ECommons.EzIpcManager;
 using ECommons.SimpleGui;
 using ECommons.Singletons;
-using PluginName.Services;
-using PluginName.UI;
+using Anonymizer.Services;
+using Anonymizer.UI;
 
-namespace PluginName;
+namespace Anonymizer;
 
-public unsafe class PluginName : IDalamudPlugin
+public unsafe class Anonymizer : IDalamudPlugin
 {
-    internal static PluginName P;
+    internal static Anonymizer P;
     internal Configuration Config;
-    public PluginName(IDalamudPluginInterface pi)
+    public Anonymizer(IDalamudPluginInterface pi)
     {
         // Plugin Initialisation
         P = this;
@@ -25,7 +25,7 @@ public unsafe class PluginName : IDalamudPlugin
         EzConfigGui.Init(new MainWindow());
 
         // Command + IPC
-        EzCmd.Add("/pn", OnChatCommand, "Toggles plugin interface");;
+        EzCmd.Add("/an", OnChatCommand, "Toggles plugin interface");;
         SingletonServiceManager.Initialize(typeof(ServiceManager));
     }
 

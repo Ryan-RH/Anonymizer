@@ -1,7 +1,7 @@
 using ECommons.ChatMethods;
 using ECommons.Configuration;
 
-namespace PluginName;
+namespace Anonymizer;
 
 public class Configuration : IEzConfig
 {
