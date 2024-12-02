@@ -1,24 +1,14 @@
-using Dalamud.Game.Text.SeStringHandling.Payloads;
 using ECommons.Configuration;
-using ECommons.EzIpcManager;
 using ECommons.SimpleGui;
 using ECommons.Singletons;
 using Anonymizer.Services;
 using Anonymizer.UI;
-using FFXIVClientStructs.FFXIV.Client.UI.Info;
-using FFXIVClientStructs.FFXIV.Client.Game.UI;
-using Dalamud.Game.Addon.Lifecycle.AddonArgTypes;
-using FFXIVClientStructs.FFXIV.Component.GUI;
 using Dalamud.Game.Addon.Lifecycle;
 using Anonymizer.PartyList;
-using System.Runtime.CompilerServices;
 using Anonymizer.Names;
 using Anonymizer.NamePlates;
-using FFXIVClientStructs.FFXIV.Client.UI;
 using Dalamud.IoC;
 using Dalamud.Plugin.Services;
-using Dalamud.Game.Gui.NamePlate;
-using Dalamud.Game.ClientState.Party;
 using Anonymizer.Chat;
 using Anonymizer.Menu;
 
@@ -35,25 +25,21 @@ public unsafe class Anonymizer : IDalamudPlugin
     [PluginService] public static IPartyList PartyListI { get; private set; } = null!;
     public Anonymizer(IDalamudPluginInterface pi)
     {
-        // Plugin Initialisation
         P = this;
         ECommonsMain.Init(pi, this, Module.DalamudReflector);
 
-
-        // Config Window
         EzConfig.Migrate<Configuration>();
         Config = EzConfig.Init<Configuration>();
         EzConfigGui.Init(new MainWindow());
 
-        // Command + IPC
         EzCmd.Add("/an", OnChatCommand, "Toggles plugin interface");;
-        SingletonServiceManager.Initialize(typeof(ServiceManager));
 
         NameManager.MainNameInit();
 
-        Svc.Framework.Update += Framework_Update;
         NamePlateGui.OnNamePlateUpdate += NamePlatesHide.NamePlates;
         Svc.Chat.ChatMessage += ChatHide.ChatHandler;
+
+        // Need to create separate class to initialise and dispose listeners as this sucks
         Svc.AddonLifecycle.RegisterListener(AddonEvent.PostUpdate, "_PartyList", PartyListHide.PartyListNames);
         Svc.AddonLifecycle.RegisterListener(AddonEvent.PostUpdate, "_TargetInfoMainTarget", NamePlatesHide.TargetName);
         Svc.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "Character", MenuHide.CharacterMenu);
@@ -62,15 +48,8 @@ public unsafe class Anonymizer : IDalamudPlugin
         Svc.AddonLifecycle.RegisterListener(AddonEvent.PostDraw, "ContextMenu", MenuHide.ContextMenu);
     }
 
-    private void Framework_Update(object framework)
-    {
-
-    }
-
-
     public void Dispose()
     {
-        Svc.Framework.Update -= Framework_Update;
         NamePlateGui.OnDataUpdate -= NamePlatesHide.NamePlates;
         Svc.Chat.ChatMessage -= ChatHide.ChatHandler;
         ECommonsMain.Dispose();

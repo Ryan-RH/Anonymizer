@@ -2,7 +2,6 @@ namespace Anonymizer.Services;
 
 public static class ServiceManager
 {
-    // Example IPC
-    public static VnavMeshIPC VnavMeshIPC { get; private set; } = null!;
+    // [PluginService] Singleton business (I saw it elsewhere, but too lazy rn)
 
 }
