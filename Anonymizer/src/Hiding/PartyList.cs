@@ -7,8 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FFXIVClientStructs.FFXIV.Component.GUI;
-using Anonymizer.Names; 
-
+using Anonymizer.Names;
+using FFXIVClientStructs.FFXIV.Client.System.Framework;
 namespace Anonymizer.PartyList;
 
 internal unsafe static class PartyListHide
@@ -23,6 +23,18 @@ internal unsafe static class PartyListHide
             var nameNode = componentNode->GetTextNodeById(17);
             if (nameNode != null)
                 nameNode->GetAsAtkTextNode()->NodeText.SetString(P.Config.MainNames[i]);
+        }
+    }
+
+    internal static void PartyListCollect()
+    {
+        var pAgentHUD = Framework.Instance()->GetUIModule()->GetAgentModule()->GetAgentHUD();
+        foreach (var pM in pAgentHUD->PartyMembers)
+        {
+            if (pM.Object != null)
+            {
+                P!.Config.partyEntityId[pM.Index] = pM.Object->EntityId;
+            }
         }
     }
 }

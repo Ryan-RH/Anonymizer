@@ -22,7 +22,9 @@ using Dalamud.Game.ClientState.Party;
 using Anonymizer.Chat;
 using Anonymizer.Menu;
 
+
 namespace Anonymizer;
+
 
 public unsafe class Anonymizer : IDalamudPlugin
 {
@@ -55,21 +57,16 @@ public unsafe class Anonymizer : IDalamudPlugin
         Svc.AddonLifecycle.RegisterListener(AddonEvent.PostUpdate, "_PartyList", PartyListHide.PartyListNames);
         Svc.AddonLifecycle.RegisterListener(AddonEvent.PostUpdate, "_TargetInfoMainTarget", NamePlatesHide.TargetName);
         Svc.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "Character", MenuHide.CharacterMenu);
+        Svc.AddonLifecycle.RegisterListener(AddonEvent.PostUpdate, "CharacterInspect", MenuHide.CharaterInspectMenu);
+        Svc.AddonLifecycle.RegisterListener(AddonEvent.PostUpdate, "CharaCard", MenuHide.AdventurerPlateMenu);
+        Svc.AddonLifecycle.RegisterListener(AddonEvent.PostDraw, "ContextMenu", MenuHide.ContextMenu);
     }
 
     private void Framework_Update(object framework)
     {
-        /*var raptureAtk = RaptureAtkModule.Instance();
-        var namePlateEntries = raptureAtk->NamePlateInfoEntries;
-        foreach (var entry in namePlateEntries)
-        {
-            entry.Name.SetString("Fuck You");
-            entry.DisplayTitle.Clear();
-            entry.Title.Clear();
-            entry.FcName.Clear();
 
-        }*/
     }
+
 
     public void Dispose()
     {
@@ -79,8 +76,11 @@ public unsafe class Anonymizer : IDalamudPlugin
         ECommonsMain.Dispose();
         P = null;
         Svc.AddonLifecycle.UnregisterListener(AddonEvent.PostUpdate, "_PartyList", PartyListHide.PartyListNames);
-        Svc.AddonLifecycle.UnregisterListener(AddonEvent.PostSetup, "_TargetInfoMainTarget", NamePlatesHide.TargetName);
+        Svc.AddonLifecycle.UnregisterListener(AddonEvent.PostUpdate, "_TargetInfoMainTarget", NamePlatesHide.TargetName);
         Svc.AddonLifecycle.UnregisterListener(AddonEvent.PostSetup, "Character", MenuHide.CharacterMenu);
+        Svc.AddonLifecycle.UnregisterListener(AddonEvent.PostUpdate, "CharacterInspect", MenuHide.CharaterInspectMenu);
+        Svc.AddonLifecycle.UnregisterListener(AddonEvent.PostUpdate, "CharaCard", MenuHide.AdventurerPlateMenu);
+        Svc.AddonLifecycle.UnregisterListener(AddonEvent.PostDraw, "ContextMenu", MenuHide.ContextMenu);
     }
 
     private void OnChatCommand(string command, string arguments)

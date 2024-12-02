@@ -12,7 +12,7 @@ public static class NameManager
     public static void MainNameInit()
     {
         Random random = new Random();
-        for (int i = 0; i < 9; i++)
+        for (int i = 0; i < 8; i++)
         {
             int firstName = random.Next(0, Names.Length);
             int lastName = random.Next(0, Names.Length);

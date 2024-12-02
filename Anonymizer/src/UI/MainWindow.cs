@@ -26,7 +26,8 @@ public unsafe class MainWindow : ConfigWindow
             
         }
 
-        ImGui.Text(PartyListI[0].Name.ToString());
+        ImGui.Text(P.Config.partyEntityId[0].ToString());
+        ImGui.Text(Svc.ClientState.LocalPlayer.EntityId.ToString());
 
     }
 }
