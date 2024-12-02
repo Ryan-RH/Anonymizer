@@ -1,3 +1,5 @@
+WIP - Prone to crashes & missing functionality/features
+
 Current Function:
 - Changes unknown players to "Hidden Player"
 - Party members and local player randomly generated name (nameplate and elsewhere)
