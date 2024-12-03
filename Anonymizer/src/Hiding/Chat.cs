@@ -13,9 +13,8 @@ internal unsafe static class ChatHide
 {
     internal static void ChatHandler(XivChatType type, int a2, ref SeString sender, ref SeString message, ref bool isHandled)
     {
-        TextPayload tPayload = new TextPayload("Hidden Player");
         sender.Payloads.Clear();
-        sender.Payloads.Add(tPayload);
+        sender.Payloads.Add(new TextPayload("Hidden Player"));
 
         if (type == XivChatType.StandardEmote || type == XivChatType.CustomEmote)
         {
