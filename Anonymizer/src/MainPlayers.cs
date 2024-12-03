@@ -2,6 +2,7 @@ using Anonymizer.Names;
 using FFXIVClientStructs.FFXIV.Client.Game.Character;
 using FFXIVClientStructs.FFXIV.Client.Game.Group;
 using FFXIVClientStructs.FFXIV.Client.System.Framework;
+using FFXIVClientStructs.FFXIV.Client.UI.Agent;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ public unsafe class MainPlayers
 {
     public class MainCharsInfo
     {
+        public bool? isAvailable { get; set; }
         public string? PlayerName { get; set; }
         public string? PseudoName { get; set; }
         public uint? EntityId { get; set; }
@@ -21,12 +23,13 @@ public unsafe class MainPlayers
 
         public MainCharsInfo() { }
 
-        public void Populate(BattleChara* pMemberObject)
+        public void Populate(HudPartyMember pMember)
         {
-            PlayerName = pMemberObject->NameString;
+            isAvailable = true;
+            PlayerName = pMember.Object->NameString;
             PseudoName = NameManager.RandomNameGenerate();
-            EntityId = pMemberObject->EntityId;
-            IsLocal = pMemberObject->EntityId == Svc.ClientState.LocalPlayer!.EntityId;
+            EntityId = pMember.Object->EntityId;
+            IsLocal = pMember.Object->EntityId == Svc.ClientState.LocalPlayer!.EntityId;
         }
     }
 
@@ -52,19 +55,27 @@ public unsafe class MainPlayers
                 {
                     var pMember = pAgentHUD->PartyMembers[j];
                     var ppFound = false;
-                    for (byte i = 0; i < 8; i++)
+                    
+                    if (pMember.Object != null)
                     {
-                        if (pMember.Object->EntityId == SavedCharsInfo[i].EntityId) // check if previous saved is within party
+                        for (byte i = 0; i < 8; i++)
                         {
-                            b_SavedCharsInfo[pMember.Index] = SavedCharsInfo[i]; // if so define that index in the buffer with the matched entity
-                            ppFound = true;
-                            break;
+                            if (pMember.Object->EntityId == SavedCharsInfo[i].EntityId) // check if previous saved is within party
+                            {
+                                b_SavedCharsInfo[pMember.Index] = SavedCharsInfo[i]; // if so define that index in the buffer with the matched entity
+                                ppFound = true;
+                                break;
+                            }
+                        }
+                        if (!ppFound)
+                        {
+                            b_SavedCharsInfo[pMember.Index].Populate(pMember); // new party member, create a new name and save in buffer
+                            var test = b_SavedCharsInfo[pMember.Index];
                         }
                     }
-                    if (!ppFound)
+                    else
                     {
-                        b_SavedCharsInfo[pMember.Index].Populate(pMember.Object); // new party member, create a new name and save in buffer
-                        var test = b_SavedCharsInfo[pMember.Index];
+                        b_SavedCharsInfo[pMember.Index].isAvailable = false;
                     }
                 }
                 SavedCharsInfo = b_SavedCharsInfo; // overwrite saved with buffer

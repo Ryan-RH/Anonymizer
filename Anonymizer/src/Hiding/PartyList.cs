@@ -22,8 +22,13 @@ internal unsafe static class PartyListHide
             var targetNode = addon->GetNodeById(i+10);
             var componentNode = targetNode->GetComponent();
             var nameNode = componentNode->GetTextNodeById(17);
-            if (nameNode != null && MainPlayers.SavedCharsInfo[i].PseudoName != null)
-                nameNode->GetAsAtkTextNode()->NodeText.SetString(MainPlayers.SavedCharsInfo[i].PseudoName);
+            if (nameNode != null)
+            {
+                if (MainPlayers.SavedCharsInfo[i].isAvailable == true)
+                    nameNode->GetAsAtkTextNode()->NodeText.SetString(MainPlayers.SavedCharsInfo[i].PseudoName);
+                else if (MainPlayers.SavedCharsInfo[i].isAvailable == false)
+                    nameNode->GetAsAtkTextNode()->NodeText.SetString("Hidden Player");
+            }
         }
     }
 }

@@ -22,6 +22,23 @@ public unsafe class MainWindow : ConfigWindow
             FurtherSvc.NamePlateGui.RequestRedraw();
         }
 
+        var customName = "";
+        ImGui.Text("Enter Custom Name");
+        if (ImGui.InputText("##customName", ref customName, 50, ImGuiInputTextFlags.EnterReturnsTrue))
+        {
+            if (customName.Length > 0)
+            {
+                foreach (var SavedChar in MainPlayers.SavedCharsInfo)
+                {
+                    if (SavedChar.IsLocal == true)
+                    {
+                        SavedChar.PseudoName = customName;
+                        FurtherSvc.NamePlateGui.RequestRedraw();
+                    }
+                }
+            }
+
+        }
 
         //ImGui.Text(P.Config.OrigNames[0]);
     }
