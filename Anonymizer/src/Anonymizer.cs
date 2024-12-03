@@ -20,13 +20,11 @@ public unsafe class Anonymizer : IDalamudPlugin
 {
     internal static Anonymizer? P;
     internal Configuration Config;
-
-    [PluginService] public static INamePlateGui NamePlateGui { get; private set; } = null!;
-    [PluginService] public static IPartyList PartyListI { get; private set; } = null!;
     public Anonymizer(IDalamudPluginInterface pi)
     {
         P = this;
         ECommonsMain.Init(pi, this, Module.DalamudReflector);
+        FurtherSvc.Init(pi);
 
         EzConfig.Migrate<Configuration>();
         Config = EzConfig.Init<Configuration>();
@@ -34,32 +32,21 @@ public unsafe class Anonymizer : IDalamudPlugin
 
         EzCmd.Add("/an", OnChatCommand, "Toggles plugin interface");;
 
-        NameManager.MainNameInit();
+        MainPlayers.Update();
 
-        NamePlateGui.OnNamePlateUpdate += NamePlatesHide.NamePlates;
+        FurtherSvc.NamePlateGui.OnNamePlateUpdate += NamePlatesHide.NamePlates;
         Svc.Chat.ChatMessage += ChatHide.ChatHandler;
 
-        // Need to create separate class to initialise and dispose listeners as this sucks
-        Svc.AddonLifecycle.RegisterListener(AddonEvent.PostUpdate, "_PartyList", PartyListHide.PartyListNames);
-        Svc.AddonLifecycle.RegisterListener(AddonEvent.PostUpdate, "_TargetInfoMainTarget", NamePlatesHide.TargetName);
-        Svc.AddonLifecycle.RegisterListener(AddonEvent.PostSetup, "Character", MenuHide.CharacterMenu);
-        Svc.AddonLifecycle.RegisterListener(AddonEvent.PostUpdate, "CharacterInspect", MenuHide.CharaterInspectMenu);
-        Svc.AddonLifecycle.RegisterListener(AddonEvent.PostUpdate, "CharaCard", MenuHide.AdventurerPlateMenu);
-        Svc.AddonLifecycle.RegisterListener(AddonEvent.PostDraw, "ContextMenu", MenuHide.ContextMenu);
+        Listeners.Init();
     }
 
     public void Dispose()
     {
-        NamePlateGui.OnDataUpdate -= NamePlatesHide.NamePlates;
+        FurtherSvc.NamePlateGui.OnDataUpdate -= NamePlatesHide.NamePlates;
         Svc.Chat.ChatMessage -= ChatHide.ChatHandler;
         ECommonsMain.Dispose();
         P = null;
-        Svc.AddonLifecycle.UnregisterListener(AddonEvent.PostUpdate, "_PartyList", PartyListHide.PartyListNames);
-        Svc.AddonLifecycle.UnregisterListener(AddonEvent.PostUpdate, "_TargetInfoMainTarget", NamePlatesHide.TargetName);
-        Svc.AddonLifecycle.UnregisterListener(AddonEvent.PostSetup, "Character", MenuHide.CharacterMenu);
-        Svc.AddonLifecycle.UnregisterListener(AddonEvent.PostUpdate, "CharacterInspect", MenuHide.CharaterInspectMenu);
-        Svc.AddonLifecycle.UnregisterListener(AddonEvent.PostUpdate, "CharaCard", MenuHide.AdventurerPlateMenu);
-        Svc.AddonLifecycle.UnregisterListener(AddonEvent.PostDraw, "ContextMenu", MenuHide.ContextMenu);
+        Listeners.Dispose();
     }
 
     private void OnChatCommand(string command, string arguments)

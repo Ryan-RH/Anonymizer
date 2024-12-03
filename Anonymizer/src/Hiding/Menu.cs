@@ -18,7 +18,9 @@ internal unsafe static class MenuHide
     internal static void CharacterMenu(AddonEvent type, AddonArgs args)
     {
         var addon = (AtkUnitBase*)args.Addon;
-        addon->GetNodeById(2)->GetAsAtkTextNode()->NodeText.SetString(P!.Config.MainNames[0]);
+        foreach (var x in MainPlayers.SavedCharsInfo)
+            if (x.IsLocal != null && x.IsLocal == true)
+                addon->GetNodeById(2)->GetAsAtkTextNode()->NodeText.SetString(x.PseudoName);
     }
 
     internal static void CharaterInspectMenu(AddonEvent type, AddonArgs args)

@@ -1,26 +1,24 @@
-[
-    {
-        "Author": "AndreB",
-        "Name": "Anonymizer",
-        "Punchline": "Anonymizes Player",
-        "Description": "Anonymizes information about the player in an attempt to make you untraceable.",
-        "Tags": [
-            "hide",
-	    "protect"
-        ],
-        "InternalName": "Anonymizer",
-        "AssemblyVersion": "1.0.0.0",
-        "TestingAssemblyVersion": "1.0.0.0",
-        "RepoUrl": "https://github.com/Ryan-RH/Anonymizer",
-        "ApplicableVersion": "any",
-        "DalamudApiLevel": 11,
-        "TestingDalamudApiLevel": 11,
-        "IsHide": "False",
-        "IsTestingExclusive": "False",
-        "DownloadCount": 1,
-        "DownloadLinkInstall": "https://github.com/Ryan-RH/Anonymizer/releases/download/v1.0.0.0/latest.zip",
-        "DownloadLinkUpdate": "https://github.com/Ryan-RH/Anonymizer/releases/download/v1.0.0.0/latest.zip",
-        "DownloadLinkTesting": "https://github.com/Ryan-RH/Anonymizer/releases/download/v1.0.0.0/latest.zip",
-        "IconUrl": ""
-    }
-]
+{
+    "Author": "AndreB",
+    "Name": "Anonymizer",
+    "Punchline": "Anonymizes Player",
+    "Description": "Anonymizes information about the player in an attempt to make you untraceable.",
+    "Tags": [
+        "hide",
+        "protect"
+    ],
+    "InternalName": "Anonymizer",
+    "AssemblyVersion": "1.0.1.0",
+    "TestingAssemblyVersion": "1.0.1.0",
+    "RepoUrl": "https://github.com/Ryan-RH/Anonymizer",
+    "ApplicableVersion": "any",
+    "DalamudApiLevel": 11,
+    "TestingDalamudApiLevel": 11,
+    "IsHide": "False",
+    "IsTestingExclusive": "False",
+    "DownloadCount": 1,
+    "DownloadLinkInstall": "https://github.com/Ryan-RH/Anonymizer/releases/download/v1.0.0.0/latest.zip",
+    "DownloadLinkUpdate": "https://github.com/Ryan-RH/Anonymizer/releases/download/v1.0.0.0/latest.zip",
+    "DownloadLinkTesting": "https://github.com/Ryan-RH/Anonymizer/releases/download/v1.0.0.0/latest.zip",
+    "IconUrl": ""
+}

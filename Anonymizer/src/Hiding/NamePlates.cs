@@ -19,7 +19,6 @@ internal unsafe static class NamePlatesHide
 {
     internal static void NamePlates(INamePlateUpdateContext context, IReadOnlyList<INamePlateUpdateHandler> handlers)
     {
-        PartyListHide.PartyListCollect();
         foreach (var handler in handlers)
         {
             if (handler.NamePlateKind == NamePlateKind.PlayerCharacter)
@@ -31,14 +30,23 @@ internal unsafe static class NamePlatesHide
 
                 if (handler.BattleChara != null && Svc.ClientState.LocalPlayer != null)
                 {
-                    if (handler.GameObjectId == Svc.ClientState.LocalPlayer.GameObjectId) handler.Name = P!.Config.MainNames[0];
+                    if (handler.GameObjectId == Svc.ClientState.LocalPlayer.GameObjectId)
+                    {
+                        foreach (var x in MainPlayers.SavedCharsInfo)
+                        {
+                            if (x.IsLocal != null && x.IsLocal==true)
+                            {
+                                handler.Name = x.PseudoName!;
+                            }
+                        }
+                    }
                     else
                     {
                         for (int i = 1; i < 8; i++)
                         {
-                            if (handler.BattleChara.EntityId == P!.Config.partyEntityId[i])
+                            if (handler.BattleChara.EntityId == MainPlayers.SavedCharsInfo[i].EntityId)
                             {
-                                handler.Name = P.Config.MainNames[i];
+                                handler.Name = MainPlayers.SavedCharsInfo[i].PseudoName!;
                                 break;
                             }
                             else
@@ -61,9 +69,23 @@ internal unsafe static class NamePlatesHide
     {
         var addon = (AtkUnitBase*)args.Addon;
         var targetNode = addon->GetTextNodeById(10);
-        if (Svc.ClientState.LocalPlayer != null && Svc.ClientState.LocalPlayer.TargetObject != null 
-            && Svc.ClientState.LocalPlayer.TargetObject.ObjectKind == ObjectKind.Player 
-            && Svc.ClientState.LocalPlayer.TargetObject.ObjectKind != ObjectKind.Companion) // Last condition is redundant but I'm confused
+        var localPlayer = Svc.ClientState.LocalPlayer;
+        if (localPlayer != null && localPlayer.TargetObject != null
+            && localPlayer.TargetObject.ObjectKind == ObjectKind.Player
+            && localPlayer.TargetObject.ObjectKind != ObjectKind.Companion) // Last condition is redundant but I'm confused
+        {
+            var pmFound = false;
+            for (int i = 0; i < 8; i++)
+            {
+                if (localPlayer.TargetObject.EntityId == MainPlayers.SavedCharsInfo[i].EntityId)
+                {
+                    pmFound = true;
+                    targetNode->NodeText.SetString(MainPlayers.SavedCharsInfo[i].PseudoName);
+                    break;
+                }
+            }
+            if (!pmFound)
                 targetNode->NodeText.SetString("Hidden Player"); // Sometimes makes companions "Hidden Player", not sure why.
+        }
     }
 }

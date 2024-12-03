@@ -9,15 +9,19 @@ namespace Anonymizer.Names;
 
 public static class NameManager
 {
-    public static void MainNameInit()
+    public static string RandomNameGenerate()
     {
         Random random = new Random();
-        for (int i = 0; i < 8; i++)
-        {
-            int firstName = random.Next(0, Names.Length);
-            int lastName = random.Next(0, Names.Length);
-            P.Config.MainNames[i] = Names[firstName] + " " + Names[lastName];
-        }
+        var firstName = Names[random.Next(0, Names.Length)];
+        var lastName = Names[random.Next(0, Names.Length)];
+        return firstName + " " + lastName;
+    }
+
+    public static void RegenerateNames()
+    {
+        foreach (var SavedChar in MainPlayers.SavedCharsInfo)
+            if (SavedChar.PseudoName != null)
+                SavedChar.PseudoName = RandomNameGenerate();
     }
 
     public static string[] Names =

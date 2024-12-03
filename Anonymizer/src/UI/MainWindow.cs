@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using FFXIVClientStructs.FFXIV.Client.Game.Object;
 using ECommons.GameHelpers;
 using FFXIVClientStructs.FFXIV.Client.UI;
+using Anonymizer.Services;
 
 namespace Anonymizer.UI;
 
@@ -17,17 +18,11 @@ public unsafe class MainWindow : ConfigWindow
     {
         if (ImGui.Button("Change Main Names"))
         {
-            NameManager.MainNameInit();
-            NamePlateGui.RequestRedraw();
+            NameManager.RegenerateNames();
+            FurtherSvc.NamePlateGui.RequestRedraw();
         }
 
-        if (ImGui.Button("Change Everyone's Names"))
-        {
-            
-        }
 
-        ImGui.Text(P.Config.partyEntityId[0].ToString());
-        ImGui.Text(Svc.ClientState.LocalPlayer.EntityId.ToString());
-
+        //ImGui.Text(P.Config.OrigNames[0]);
     }
 }
