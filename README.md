@@ -4,6 +4,7 @@ Current Function:
 - Changes unknown players to "Hidden Player"
 - Party members and local player randomly generated name (nameplate and elsewhere)
 - Removes various names from chat, character inspect, adventurer plate
+- Custom name
 
 
 To do:
@@ -11,4 +12,5 @@ To do:
 - Glamourer for all players
 - Menu changes
 - Plugin adaptations
-- More options -> custom name
+- More options
+- Disposing retrieves previous names
